@@ -1,0 +1,8 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="preinit.lua"/>
+	<Script file="event.lua"/>
+	<Script file="table.lua"/>
+	<Script file="core.lua"/>
+	<Script file="config.lua"/>
+	<Script file="anchor.lua"/>
+</Ui>
