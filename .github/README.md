@@ -32,7 +32,6 @@
     - elements: castbars, arena trinkets, auras, cooldowns, class portraits
 ## Installation
 - **[Download latest version](https://github.com/s0h2x/pw_unitframes/archive/refs/heads/master.zip)**
-- Extract the `pw_unitframes-master` folder to the root folder of the AddOns;
 - Extract the `pw_unitframes-master.zip` and open this folder
 - Move the `sub` folder to the root folder of the AddOns;
 - Make sure the folder name is not have `-master`
