@@ -107,6 +107,7 @@ end
 function addon:setup_anchor()
 	if addon:taint() then return end
 	PlayerFrame:SetScale(config.player.scale)
+	PlayerFrame:SetMovable(false)
 	TargetFrame:SetScale(config.target.scale)
 	FocusFrame:SetScale(config.focus.scale)
 	FocusFrame:SetMovable(false)
