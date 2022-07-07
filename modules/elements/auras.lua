@@ -53,6 +53,7 @@ local NUM_TOT_AURA_ROWS = config.numrowtot
 local DEBUFFS_VERTICAL = config.debuffs_vertical
 local DEBUFFS_OFFSET_Y = config.debuffs_offset_y
 local E_DEBUFFS_OFFSET_Y = config.e_debuffs_offset_y
+local BORDER_OFFSET = config.border_offset
 local partybuffs = addon.config.party
 local MAX_PARTY_BUFFS = partybuffs.maxbuffs
 local MAX_PARTY_DEBUFFS = 4
@@ -68,6 +69,11 @@ local t_buffs = CreateFrame('Frame', 'TargetBuffs', UIParent)
 local t_debuffs = CreateFrame('Frame', 'TargetDebuffs', UIParent)
 t_buffs:SetSize(146, 28)
 t_debuffs:SetSize(146, 28)
+
+local f_buffs = CreateFrame('Frame', 'FocusBuffs', UIParent)
+local f_debuffs = CreateFrame('Frame', 'FocusDebuffs', UIParent)
+f_buffs:SetSize(146, 28)
+f_debuffs:SetSize(146, 28)
 
 -- /* create dispelable buffs border */
 function __TargetFrame_UpdateAurasDispel(self)
@@ -111,9 +117,9 @@ function __TargetFrame_UpdateAuras(self)
 				-- border:
 				local bo = frame:CreateTexture(nil, 'OVERLAY')
 				if bo then
+					bo:SetAllPoints()
 					bo:SetTexture(src.border)
-					bo:SetPoint('TOPRIGHT', frameIcon, 3.4, 3.4)
-					bo:SetPoint('BOTTOMLEFT', frameIcon, -3.4, -3.4)
+					bo:SetVertexColor(unpack(config.border_color))
 				end
 				-- count:
 				frameCount = _G[self:GetName()..'Buff'..i..'Count']
@@ -152,8 +158,7 @@ function __TargetFrame_UpdateAuras(self)
 				local bo = frame:CreateTexture(nil, 'OVERLAY', nil, 7)
 				if bo then
 					bo:SetTexture(src.border)
-					bo:SetPoint('TOPRIGHT', frameIcon, 3.4, 3.4)
-					bo:SetPoint('BOTTOMLEFT', frameIcon, -3.4, -3.4)
+					bo:SetAllPoints()
 				end
 				-- color:
 				local debuffName = UnitDebuff(self.unit, i)
@@ -166,7 +171,7 @@ function __TargetFrame_UpdateAuras(self)
 						bo:SetVertexColor(color.r, color.g, color.b)
 					end
 				else
-					bo:SetVertexColor(1, 1, 1, 1)
+					bo:SetVertexColor(unpack(config.border_color))
 				end
 				-- count:
 				frameCount = _G[self:GetName()..'Debuff'..i..'Count']
@@ -248,6 +253,9 @@ function __UpdateBuffAnchor(self, buffName, index, numDebuffs, anchorIndex, size
 			if (self.unit == 'target') then
 				buff:ClearAllPoints()
 				buff:SetPoint(point..'LEFT', t_buffs, relativePoint..'LEFT', AURA_START_X, startY)
+			elseif (self.unit == 'focus') then
+				buff:ClearAllPoints()
+				buff:SetPoint(point..'LEFT', f_buffs, relativePoint..'LEFT', AURA_START_X, startY)
 			else
 				buff:SetPoint(point..'LEFT', self, relativePoint..'LEFT', AURA_START_X, startY)
 			end
@@ -295,6 +303,8 @@ function __UpdateDebuffAnchor(self, debuffName, index, numBuffs, anchorIndex, si
 			-- unit is friendly and there are buffs...debuffs start on bottom
 			if (self.unit == 'target') then
 				buff:SetPoint(point..'LEFT', t_debuffs, relativePoint..'LEFT', AURA_START_X, startY);
+			elseif (self.unit == 'focus') then
+				buff:SetPoint(point..'LEFT', f_debuffs, relativePoint..'LEFT', AURA_START_X, startY);
 			else
 				buff:SetPoint(point..'LEFT', self, relativePoint..'LEFT', AURA_START_X, startY);
 			end
@@ -389,14 +399,11 @@ local function CreatePartyAuras()
 				bo = buffs:CreateTexture(nil, 'OVERLAY', nil, 7)
 				if bo then
 					bo:SetTexture(src.border)
-					bo:SetPoint('TOPRIGHT', icn, 1.6, 1.6)
-					bo:SetPoint('BOTTOMLEFT', icn, -1.6, -1.6)
+					bo:SetAllPoints()
+					bo:SetVertexColor(unpack(config.border_color))
 				end
 				buffs.styled = true
 			end
-			-- if j == MAX_PARTY_BUFFS then
-				-- maxshows = true
-			-- end
 		end
 		
 		-- debuffs first row:
@@ -421,8 +428,7 @@ local function CreatePartyAuras()
 				bo = debuffs:CreateTexture(nil, 'OVERLAY', nil, 7)
 				if bo then
 					bo:SetTexture(src.border)
-					bo:SetPoint('TOPRIGHT', icn, 1.6, 1.6)
-					bo:SetPoint('BOTTOMLEFT', icn, -1.6, -1.6)
+					bo:SetAllPoints()
 				end
 				-- color:
 				oldborder = _G[debuffs:GetName()..'Border']
@@ -430,7 +436,6 @@ local function CreatePartyAuras()
 				bo:SetVertexColor(1, 0, 0)
 				debuffs.styled = true
 			end
-			-- if (k == 4) then maxshows = true end
 		end
 	end
 end

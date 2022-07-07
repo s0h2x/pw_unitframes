@@ -122,6 +122,5 @@ local function styletrinkets()
 		trinket:SetScript('OnEvent', ArenaTrinkets_OnEvent)
 	end
 end
-
 if not IsAddOnLoaded('Blizzard_ArenaUI') then LoadAddOn('Blizzard_ArenaUI') end
 styletrinkets()

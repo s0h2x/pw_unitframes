@@ -247,7 +247,6 @@ end
 
 -- /* setup arena target */
 if uconfig.arenatargets and e_arena then
-	if not IsAddOnLoaded('Blizzard_ArenaUI') then LoadAddOn('Blizzard_ArenaUI') end
 	for i=1, MAX_ARENA_ENEMIES do
 		c_target(i, 'ArenaEnemyFrame', 'arena', 'ArenaTargetFrame')
 		local arenatarget = _G['ArenaTargetFrame'..i]

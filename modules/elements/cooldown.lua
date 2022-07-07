@@ -1,5 +1,6 @@
 local addon = select(2,...);
 local config = addon.config.auras;
+if not config.cooldown_module then return end;
 
 -- /* lua lib */
 local getmetatable = getmetatable
@@ -66,12 +67,12 @@ local function update(self, elapsed)
 end
 
 local function createtext(self)
-	local scale = min(self:GetParent():GetWidth()/config.icon_size, 1)
-	if scale < config.minscale then
+	local scale = min(self:GetParent():GetWidth()/config.aura_size, 1)
+	if not config.cooldown_show then
 		self.noOCC = true
 	else
 		local text = self:GetParent():CreateFontString(nil, 'OVERLAY', 'pUiFont_Auras')
-		text:SetPoint('TOP', 0, 4)
+		text:SetPoint('TOP', 0, config.timer_y)
 		self:SetScript('OnUpdate', update)
 		self:SetAlpha(1)
 		self.text = text

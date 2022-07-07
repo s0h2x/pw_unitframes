@@ -84,7 +84,7 @@ end
 
 -- /* create mover elements */
 local anchorlist, backup, f = {}, {}
-local function create_anchor(self, text, value, anchor, width, height)
+local function create_anchor(self, text, value, anchor, width, height, parent)
 	local key = 'elements_anchor'
 	if not _appdata[key] then _appdata[key] = {} end
 
@@ -93,7 +93,13 @@ local function create_anchor(self, text, value, anchor, width, height)
 	mover:SetWidth(width or self:GetWidth())
 	mover:SetHeight(height or self:GetHeight())
 	mover:SetBackdrop(addon.backdrop)
-	mover:SetBackdropColor(0.67058823529, 0.80392156862, 0.93725490196, .65)
+	local color
+	if not parent then
+		color = {.67058823529,.80392156862,.93725490196,.65}
+	else
+		color = {1,.56470588235,.25098039215,.55}
+	end
+	mover:SetBackdropColor(unpack(color))
 	mover:SetBackdropBorderColor(0, 1, .62, .5)
 
 	-- setup name
@@ -215,7 +221,7 @@ local function createconsole()
 	end
 
 	-- create lock button
-	bu[1]:SetScript('OnClick', lock_elements)
+	bu[1]:SetScript('OnClick', addon.toggle_anchors)
 	
 	-- create cancel button
 	bu[2]:SetScript('OnClick', function()
@@ -266,9 +272,7 @@ function addon:toggle_anchors(forcelock)
 	return secure
 end
 
-SlashCmdList['PRETTY_MOVER'] = function(...)
-	addon:toggle_anchors()
-end
+SlashCmdList['PRETTY_MOVER'] = function(...) addon:toggle_anchors() end
 SLASH_PRETTY_MOVER1 = '/mover'
 
 addon.c_anchor = create_anchor

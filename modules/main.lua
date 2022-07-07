@@ -33,11 +33,12 @@ local xofs,yofs = config.auras.start_x,config.auras.start_y
 
 -- /* anchor table */
 local config_anchor = setmetatable({
-	PlayerFrame = {pos={a='CENTER', p=UIParent, a2='CENTER', x=-290, y=-100},siz={w=140, h=40}},
-	TargetFrame = {pos={a='CENTER', p=UIParent, a2='CENTER', x=290, y=-100},siz={w=140, h=40}},
-	PetFrame = {pos={a='TOPLEFT', p=PlayerFrame, a2='TOPLEFT', x=98, y=-84},siz={w=120, h=36}},
-	PartyMemberFrame1 = {pos={a='LEFT', p=UIParent, a2='LEFT', x=120, y=125},siz={w=150, h=144}},
-	ArenaEnemyFrame1 = {pos={a='RIGHT', p=UIParent, a2='RIGHT', x=-120, y=125},siz={w=150, h=144}},
+	PlayerFrame = {pos={a='CENTER', p=UIParent, a2='CENTER', x=-290, y=-100},siz={w=140, h=40},par=true},
+	TargetFrame = {pos={a='CENTER', p=UIParent, a2='CENTER', x=290, y=-100},siz={w=140, h=40},par=true},
+	FocusFrame = {pos={a='TOPLEFT', p=UIParent, a2='TOPLEFT', x=250, y=-240},siz={w=140, h=40},par=true},
+	PetFrame = {pos={a='TOPLEFT', p=PlayerFrame, a2='TOPLEFT', x=98, y=-84},siz={w=124, h=46}},
+	PartyMemberFrame1 = {pos={a='LEFT', p=UIParent, a2='LEFT', x=120, y=125},siz={w=150, h=144},par=true},
+	ArenaEnemyFrame1 = {pos={a='RIGHT', p=UIParent, a2='RIGHT', x=-120, y=125},siz={w=150, h=144},par=true},
 	PartyTargetFrame1 = {pos={a='TOPLEFT', p=PartyMemberFrame1, a2='TOPLEFT', x=-62, y=0},siz={w=50, h=70}},
 	ArenaTargetFrame1 = {pos={a='TOPRIGHT', p=ArenaEnemyFrame1, a2='TOPRIGHT',x=62, y=0},siz={w=50, h=70}},
 	TargetFrameToT = {pos={a='TOPLEFT', p=TargetFrame, a2='BOTTOMRIGHT', x=sqr and -20 or -116, y=sqr and 87 or 20},siz={w=90, h=40}},
@@ -48,6 +49,8 @@ local config_anchor = setmetatable({
 	PartyCastingBar1 = {pos={a='TOPLEFT', p=PartyMemberFrame1, a2='TOPRIGHT', x=-2, y=-18},siz={w =174, h=42}},
 	TargetBuffs = {pos={a='TOPLEFT', p=TargetFrame, a2='BOTTOMLEFT', x=xofs, y=yofs},siz={w=124, h=30}},
 	TargetDebuffs = {pos={a='LEFT', p=TargetFrame, a2='LEFT', x=xofs, y=yofs +6},siz={w=124, h=30}},
+	FocusBuffs = {pos={a='TOPLEFT', p=FocusFrame, a2='BOTTOMLEFT', x=xofs, y=yofs},siz={w=124, h=30}},
+	FocusDebuffs = {pos={a='LEFT', p=FocusFrame, a2='LEFT', x=xofs, y=yofs +6},siz={w=124, h=30}},
 },{
 	__index = function(t,k)
 		local _,_,v = k:GetName()
@@ -83,7 +86,7 @@ local strings = {
 local nextframes = {
 	PlayerFrame,TargetFrame,PartyMemberFrame1,ArenaEnemyFrame1,PartyTargetFrame1,TargetFrameToT,FocusFrameToT,
 	CastingBarFrame,TargetFrameSpellBar,FocusFrameSpellBar,PartyCastingBar1,TargetBuffs,TargetDebuffs,
-	ArenaTargetFrame1,PetFrame
+	ArenaTargetFrame1,PetFrame,FocusFrame,FocusBuffs,FocusDebuffs
 }
 
 -- /* make frames cleaner */
@@ -106,13 +109,13 @@ function addon:setup_anchor()
 	PlayerFrame:SetScale(config.player.scale)
 	TargetFrame:SetScale(config.target.scale)
 	FocusFrame:SetScale(config.focus.scale)
-
+	FocusFrame:SetMovable(false)
 	-- create anchor:
 	for _,frame in pairs(nextframes) do
 		local data = config_anchor[frame:GetName()]
 		local position = {data.pos.a, data.pos.p, data.pos.a2, data.pos.x, data.pos.y}
 		frame:ClearAllPoints()
-		frame.anchor = c_anchor(frame, frame:GetName(), frame:GetName(), position, data.siz.w, data.siz.h)
+		frame.anchor = c_anchor(frame,frame:GetName(),frame:GetName(),position,data.siz.w,data.siz.h,data.par or false)
 		frame.SetPoint = noop
 	end
 end

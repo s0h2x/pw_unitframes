@@ -1,6 +1,7 @@
 local addon = select(2,...);
 local config = addon.config;
-local own, src = config.global, config.media
+local own, src = config.global, config.media;
+if not own.castbar_show then return end;
 
 --[[
 /**

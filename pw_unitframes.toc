@@ -1,7 +1,7 @@
 ## Interface: 30300
 ## Title: |cff00ffff*|r |cffabcdefpw_unitframes|r
 ## Notes: Lightweight unitframes
-## Version: 1.2c
+## Version: 1.2.7c
 ## SavedVariables: _appdata
 ## Author: s0h2x
 

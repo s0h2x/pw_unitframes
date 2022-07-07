@@ -1,10 +1,10 @@
 local addon = select(2,...);
-local path = [[Interface\AddOns\pw_unitframes\assets\]]
+local path = [[Interface\AddOns\pw_unitframes\assets\]];
 
 --[[
 /**
- * general config
- * default settings of pretty light UF
+ * config
+ * contains main settings of addon
  * https://github.com/s0h2x/
  *  (c) 2022, s0h2x
  *
@@ -18,8 +18,9 @@ local config = {
 	global = {
 		classportraits = true, -- enable portraits by class
 		prettyportraits = true, -- display custom portraits
-		combaticon = true, -- display combat state
 		framecolors = {.22, .22, .22, 1}, -- main colors theme of frames
+		combaticon = true, -- display combat state
+		castbar_show = true, -- enable castbar style
 		castbar_scale = 1.2, -- castbar scale
 		castbar_offset = 2, -- castbar offset by x-axis
 		FFA = true, -- show FFA status icon for all frames
@@ -29,30 +30,38 @@ local config = {
 	auras = {
 		-- size:
 		aura_size = 26, -- aura size
-		minscale = .5, -- minimum scale we want to show cooldown counts at, anything below this will be hidden
-		minduration = 3, -- minimum duration to show cooldown text
-		icon_size = 20, -- normal size for an icon (don't change this)
 		font_size = 14, -- base font size
-		threshold = 6.5, -- last seconds
-		duration_color = {1, .7, 0}, -- text color of duration > threshold
-		threshold_color = {1, 0, 0}, -- text color of duration < threshold
 		buffs_scale = 1.16, -- buffs scale
 		debuffs_scale = 1.16, -- debuffs scale
+		
+		-- cooldown timer:
+		cooldown_show = true, -- show cooldown timer text
+		cooldown_module = true, -- enable cooldown module (its global)
+		minscale = .6, -- get optimal UIScale for showing cooldown (if UIScale < minscale = hide cooldown text)
+		minduration = 3, -- minimum duration to show cooldown text (trigger)
+		threshold = 6.5, -- last seconds (red)
+		duration_color = {1, .7, 0}, -- text color of duration > threshold (yellow by default)
+		threshold_color = {1, 0, 0}, -- text color of duration < threshold (red by default)
+		timer_y = 4, -- cooldown text position by y-axis (TOP by default)
+		
 		-- position:
 		start_x = 7, -- auras start position by x-axis (buffs)
 		start_y = 26, -- auras start position by y-axis (buffs)
 		offset_x = 1.3, -- spacing between auras by x-axis
 		offset_y = 3, --  spacing between auras by y-axis
-		numrow = 4, -- how many auras to show in one row
-		numrowtot = 3, -- how many auras to show in one (first) row on target if target has target of target (whut?)
+		numrow = 5, -- how many auras to show in one row (second line) 5 = 4x4x4
+		numrowtot = 2, -- space in buffs row, if target has of target (4 = only first row, 5 = first and second row)
 		debuffs_vertical = true, -- vertical growth (from bottom to top)
 		debuffs_offset_y = 5, -- vertical growth offset between debuffs
 		e_debuffs_offset_y = 30, -- vertical growth offset between debuffs on enemy frame
+		
 		-- maximum number of buffs/debuffs:
 		target_maxbuffs = 12, -- max buffs show, recommended to set value between 8-16
 		target_maxdebuffs = 12, -- default: 16, recommended to set value between 8-16
+		
 		-- misc:
 		dispelable = true, -- glowing dispelable buffs
+		border_color = {.3, .3, .3, 1}, -- border colors for buffs and some debuffs (R, G, B, Alpha)
 	},
 	
 	-- player frame:
@@ -64,6 +73,7 @@ local config = {
 		name = true, -- show player name
 		petname = false, -- show pet name
 		runescale = 1, -- deathknight rune orbs scale
+		runeanchor = {'TOP',PlayerFrameManaBar,'BOTTOM',12,-10},
 	},
 	
 	-- target frame:
@@ -122,11 +132,6 @@ local config = {
 		arenatargets = true, -- show arena targets
 		partytarget_scale = 0.9, -- party target scale
 		arenatarget_scale = 0.6, -- arena target scale
-	},
-
-	-- default and backup for restore:
-	position = {
-		['runebar'] = {'TOP', PlayerFrameManaBar, 'BOTTOM', 12, -10},
 	},
 	
 	media = {

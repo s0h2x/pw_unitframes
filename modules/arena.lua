@@ -41,13 +41,15 @@ local function frame_style_arena()
 		frame.texture:SetVertexColor(unpack(config.global.framecolors))
 		frame.texture:SetTexCoord(0.09375, 1.0, 0, 0.78125)
 		
+		-- pet setup:
 		frame.pet = _G[frame:GetName()..'PetFrame']
 		frame.pet:SetScale(.74)
 		frame.pet:ClearAllPoints();
 		frame.pet:SetPoint('TOPLEFT', frame, 'TOPLEFT', 2, -38)
-		
 		frame.pettexture = _G[frame.pet:GetName()..'Texture']
 		frame.pettexture:SetVertexColor(unpack(config.global.framecolors))
+		frame.petportrait = _G[frame.pet:GetName()..'Portrait']
+		frame.petportrait:SetAllPoints()
 		
 		frame.bg = _G[frame:GetName()..'Background']
 		frame.bg:SetSize(62, 20)
@@ -85,6 +87,10 @@ local function frame_style_arena()
 		frame.classPortrait:SetSize(34, 34);
 		frame.classPortrait:ClearAllPoints();
 		frame.classPortrait:SetPoint('RIGHT', frame, 'RIGHT', -4, -2);
+
+		if config.global.prettyportraits then
+			frame.classPortrait:SetTexture(src.portraits);
+		end
 		
 		-- castbar setup:
 		castbar = _G[frame:GetName()..'CastingBar']
@@ -127,4 +133,5 @@ local function frame_style_arena()
 		castbar.update = 0.1
 	end
 end
-hooksecurefunc('Arena_LoadUI',frame_style_arena);
+frame_style_arena()
+-- hooksecurefunc('Arena_LoadUI',frame_style_arena);

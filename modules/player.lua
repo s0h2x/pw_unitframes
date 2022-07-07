@@ -13,6 +13,11 @@ local uconfig, src = config.player, config.media;
  */
 ]]
 
+local select = select
+
+local UnitClass = UnitClass
+local get_unitclass = select(2, UnitClass('player'))
+
 local __PlayerFrame_ToPlayerArt
 local __PlayerFrame_UpdatePvPStatus
 
@@ -27,12 +32,6 @@ function __PlayerFrame_ToPlayerArt(self)
 	PlayerAttackIcon:SetSize(28, 28)
 	PlayerAttackIcon:SetTexture(src.dualweild)
 	PlayerAttackIcon:SetTexCoord(0, 1, 0, 1);
-	
-	-- style rune orbs:
-	-- RuneFrame:ClearAllPoints()
-	-- RuneFrame.Anchor = addon.create_anchor(RuneFrame,'Runes',RuneFrame:GetName(),config.position.runebar,140,40)
-	-- RuneFrame:SetParent(PlayerFrame)
-	-- RuneFrame:SetScale(uconfig.runescale*.95)
 
 	PlayerFrameVehicleTexture:Hide()
 	PlayerFrameGroupIndicator:Hide()
@@ -70,10 +69,17 @@ function __PlayerFrame_ToPlayerArt(self)
 	PlayerFrameAlternateManaBar:SetPoint('BOTTOMLEFT', self, 'BOTTOMLEFT', 128, 23)
 	
 	-- tweak player elements with config:
-	if (not uconfig.name) then PlayerName:SetAlpha(0) end
-	if (not uconfig.leadericon) then PlayerLeaderIcon:SetAlpha(0) end
-	if (not uconfig.level) then PlayerLevelText:SetAlpha(0) end
-	if (not uconfig.petname) then PetName:SetAlpha(0) end
+	if not uconfig.name then PlayerName:SetAlpha(0) end
+	if not uconfig.leadericon then PlayerLeaderIcon:SetAlpha(0) end
+	if not uconfig.level then PlayerLevelText:SetAlpha(0) end
+	if not uconfig.petname then PetName:SetAlpha(0) end
+	-- style rune orbs:
+	if (get_unitclass == 'DEATHKNIGHT') then
+		RuneFrame:ClearAllPoints()
+		RuneFrame.anchor = addon.c_anchor(RuneFrame,'Runes',RuneFrame:GetName(),uconfig.runeanchor,140,40)
+		RuneFrame:SetParent(PlayerFrame)
+		RuneFrame:SetScale(uconfig.runescale)
+	end
 end
 
 -- /* FFA for player */
