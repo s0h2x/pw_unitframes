@@ -4,16 +4,16 @@
 </h1>
 <p align="center">Lightweight version of my unitframes, base on default WoW UI code.</p>
 <p align="center">
-    <!--<a href="https://github.com/s0h2x/pw_unitframes/releases/latest">
-    <a href="https://github.com/s0h2x/pw_unitframes/archive/refs/heads/master.zip">
+    <a href="https://github.com/s0h2x/pw_unitframes/releases/latest">
+    <a href="https://github.com/s0h2x/pw_unitframes/releases/download/v1.2.7c/pw_unitframes.zip">
     <img src="https://img.shields.io/github/downloads/s0h2x/pw_unitframes/total?label=Download%40latest&style=flat-square&logo=github&logoColor=white"
          alt="Latest">
    <a href="https://github.com/s0h2x/pw_unitframes/releases">
     <img src="https://img.shields.io/github/v/release/s0h2x/pw_unitframes?include_prereleases&style=flat-square&logo=github&logoColor=white"
-         alt="Release">-->
-    <a href="https://github.com/s0h2x/pw_unitframes/archive/refs/heads/master.zip">
+         alt="Release">
+    <!--<a href="https://github.com/s0h2x/pw_unitframes/archive/refs/heads/master.zip">
     <img src="https://img.shields.io/badge/download-latest-red?style=flat-square"
-         alt="download latest">
+         alt="download latest">-->
     <a href="https://wowwiki-archive.fandom.com/wiki/Patch_3.3.5">
     <img src="https://img.shields.io/badge/WoWPatch-3.3.5-blue?style=flat-square"
          alt="WoW version dependency">
