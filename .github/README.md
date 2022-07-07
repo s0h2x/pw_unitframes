@@ -31,7 +31,7 @@
     - frames: player, target, focus, target of target, focus of target, party, party-targets, arena, arena-targets
     - elements: castbars, arena trinkets, auras, cooldowns, class portraits
 ## Installation
-- **[Download latest version](https://github.com/s0h2x/pw_unitframes/archive/refs/heads/master.zip)**
+- **[Download latest](https://github.com/s0h2x/pw_unitframes/releases/download/v1.2.7c/pw_unitframes.zip)** stable version from the release section.
 - Extract the `pw_unitframes-master.zip` and open this folder
 - Move the `sub` folder to the root folder of the AddOns;
 - Make sure the folder name is not have `-master`
