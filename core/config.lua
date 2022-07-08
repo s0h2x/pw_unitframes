@@ -22,7 +22,7 @@ local config = {
 		combaticon = true, -- display combat state
 		castbar_show = true, -- enable castbar style
 		castbar_scale = 1.2, -- castbar scale
-		castbar_offset = 2, -- castbar offset by x-axis
+		castbar_icon_color = {.2, .2, .2, 1}, -- castbar icon border color
 		FFA = true, -- show FFA status icon for all frames
 	},
 	
@@ -45,9 +45,9 @@ local config = {
 		timer_y = 4, -- cooldown text position by y-axis (TOP by default)
 		
 		-- position:
-		start_x = 7, -- auras start position by x-axis (buffs)
+		start_x = 1, -- auras start position by x-axis (buffs)
 		start_y = 26, -- auras start position by y-axis (buffs)
-		offset_x = 1.3, -- spacing between auras by x-axis
+		offset_x = -1, -- spacing between auras by x-axis
 		offset_y = 3, --  spacing between auras by y-axis
 		numrow = 5, -- how many auras to show in one row (second line) 5 = 4x4x4
 		numrowtot = 2, -- space in buffs row, if target has of target (4 = only first row, 5 = first and second row)
@@ -58,6 +58,8 @@ local config = {
 		-- maximum number of buffs/debuffs:
 		target_maxbuffs = 12, -- max buffs show, recommended to set value between 8-16
 		target_maxdebuffs = 12, -- default: 16, recommended to set value between 8-16
+		focus_maxbuffs = 12,
+		focus_maxdebuffs = 12,
 		
 		-- misc:
 		dispelable = true, -- glowing dispelable buffs
@@ -72,8 +74,8 @@ local config = {
 		leadericon = false, -- show player leader icon
 		name = true, -- show player name
 		petname = false, -- show pet name
-		runescale = 1, -- deathknight rune orbs scale
-		runeanchor = {'TOP',PlayerFrameManaBar,'BOTTOM',12,-10},
+		runescale = 1.15, -- deathknight rune orbs scale
+		runeanchor = {'TOP', PlayerFrame, 'BOTTOM', 54, 43}, -- default position for runebars
 	},
 	
 	-- target frame:
@@ -90,7 +92,6 @@ local config = {
 	-- focus frame:
 	focus = {
 		scale = 1, -- focus scale
-		fullsize = 1, -- cvar fullsize 0 or 1
 		level = false, -- show focus level
 		leadericon = false, -- leader icon
 		name = true, -- show focus name
@@ -117,11 +118,21 @@ local config = {
 	
 	-- party frames:
 	party = {
+		-- general:
 		enable = true, -- show party member frames
 		scale = 1.26, -- party members scale
+		
+		-- castbar:
 		castbar_scale = 1.07, -- castbar scale
-		showbuffs = true, -- show party buffs
+		castbar_width = 125, -- castbar width
+		castbar_height = 10, -- castbar height
+		
+		-- auras:
+		show_buffs = true, -- show party buffs
+		show_debuffs = true, -- show party debuffs
 		maxbuffs = 4, -- how many buffs to show
+		buffs_scale = 1.8, -- party buffs scale
+		debuffs_scale = 1.64, -- party debuffs scale
 	},
 	
 	-- target of targets:

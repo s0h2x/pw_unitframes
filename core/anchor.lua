@@ -84,7 +84,7 @@ end
 
 -- /* create mover elements */
 local anchorlist, backup, f = {}, {}
-local function create_anchor(self, text, value, anchor, width, height, parent)
+local function create_anchor(self, text, value, anchor, width, height, parent, apos)
 	local key = 'elements_anchor'
 	if not _appdata[key] then _appdata[key] = {} end
 
@@ -128,8 +128,9 @@ local function create_anchor(self, text, value, anchor, width, height, parent)
 	end)
 	mover:Hide()
 
+	apos = apos or 'CENTER'
 	self:ClearAllPoints()
-	self:SetPoint('CENTER', mover, 'CENTER')
+	self:SetPoint(apos, mover, apos)
 
 	return mover
 end

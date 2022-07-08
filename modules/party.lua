@@ -31,19 +31,21 @@ local noop = addon.noop
 
 -- /* castbar position */
 local function PartyCastingBar_OnShow()
+	if not uconfig.castbar_show then return end
 	for i = 1, MAX_PARTY_MEMBERS do
 		local partycastbar = _G['PartyCastingBar'..i]
-		partycastbar:SetSize(125, 10)
-		if i == 1 then
-			partycastbar:SetPoint('TOPLEFT', PartyMemberFrame1, 'TOPRIGHT', -2, -18)
+		partycastbar:SetSize(uconfig.castbar_width, uconfig.castbar_height)
+		if (i == 1) then
+			partycastbar:SetPoint('TOPLEFT', PartyMemberFrame1, 'TOPRIGHT', -2, -16)
 		else
-			partycastbar:SetPoint('TOP', _G['PartyCastingBar'..i-1], 'BOTTOM', 0, -66)
+			partycastbar:SetPoint('TOP', _G['PartyCastingBar'..i-1], 'BOTTOM', 0, -67)
 		end
 	end
 end
 
 -- /* handling events  */
 local function PartyCastingBar_OnEvent(self, event, ...)
+	if not uconfig.castbar_show then return end
 	local arg1 = ...
 	if (event == 'CVAR_UPDATE') then
 		if (self.casting or self.channeling) then
@@ -108,6 +110,7 @@ local function SetPartySpellbarAspect(self)
 		casticon.border:SetPoint('TOPRIGHT', casticon, 3, 3)
 		casticon.border:SetPoint('BOTTOMLEFT', casticon, -3, -3)
 		casticon.border:SetTexture(src.border)
+		casticon.border:SetVertexColor(unpack(config.global.castbar_icon_color))
 	end
 end
 

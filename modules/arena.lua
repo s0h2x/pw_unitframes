@@ -117,6 +117,7 @@ local function frame_style_arena()
 		castbar.icon.border:SetPoint('TOPRIGHT', castbar.icon, 2, 2)
 		castbar.icon.border:SetPoint('BOTTOMLEFT', castbar.icon, -2, -2)
 		castbar.icon.border:SetTexture(src.border)
+		castbar.icon.border:SetVertexColor(unpack(config.global.castbar_icon_color))
 		
 		castbar.text = _G[castbar:GetName()..'Text']
 		castbar.text:ClearAllPoints()

@@ -35,7 +35,7 @@ local xofs,yofs = config.auras.start_x,config.auras.start_y
 local config_anchor = setmetatable({
 	PlayerFrame = {pos={a='CENTER', p=UIParent, a2='CENTER', x=-290, y=-100},siz={w=140, h=40},par=true},
 	TargetFrame = {pos={a='CENTER', p=UIParent, a2='CENTER', x=290, y=-100},siz={w=140, h=40},par=true},
-	FocusFrame = {pos={a='TOPLEFT', p=UIParent, a2='TOPLEFT', x=250, y=-240},siz={w=140, h=40},par=true},
+	FocusFrame = {pos={a='CENTER', p=UIParent, a2='CENTER', x=-305, y=89},siz={w=140, h=40},par=true},
 	PetFrame = {pos={a='TOPLEFT', p=PlayerFrame, a2='TOPLEFT', x=98, y=-84},siz={w=124, h=46}},
 	PartyMemberFrame1 = {pos={a='LEFT', p=UIParent, a2='LEFT', x=120, y=125},siz={w=150, h=144},par=true},
 	ArenaEnemyFrame1 = {pos={a='RIGHT', p=UIParent, a2='RIGHT', x=-120, y=125},siz={w=150, h=144},par=true},
@@ -46,11 +46,11 @@ local config_anchor = setmetatable({
 	CastingBarFrame = {pos={a='CENTER', p=UIParent, a2='CENTER', x=0, y=-160},siz={w=220, h=24}},
 	TargetFrameSpellBar = {pos={a='CENTER', p=TargetFrame, a2='TOPRIGHT', x=-142, y=50},siz={w=184, h=22}},
 	FocusFrameSpellBar = {pos={a='CENTER', p=FocusFrame, a2='TOPLEFT', x=100, y=15},siz={w=184, h=22}},
-	PartyCastingBar1 = {pos={a='TOPLEFT', p=PartyMemberFrame1, a2='TOPRIGHT', x=-2, y=-18},siz={w =174, h=42}},
-	TargetBuffs = {pos={a='TOPLEFT', p=TargetFrame, a2='BOTTOMLEFT', x=xofs, y=yofs},siz={w=124, h=30}},
-	TargetDebuffs = {pos={a='LEFT', p=TargetFrame, a2='LEFT', x=xofs, y=yofs +6},siz={w=124, h=30}},
-	FocusBuffs = {pos={a='TOPLEFT', p=FocusFrame, a2='BOTTOMLEFT', x=xofs, y=yofs},siz={w=124, h=30}},
-	FocusDebuffs = {pos={a='LEFT', p=FocusFrame, a2='LEFT', x=xofs, y=yofs +6},siz={w=124, h=30}},
+	PartyCastingBar1 = {pos={a='TOPLEFT', p=PartyMemberFrame1, a2='TOPRIGHT', x=6, y=-10},siz={w =174, h=42}},
+	TargetBuffs = {pos={a='TOPLEFT', p=TargetFrame, a2='BOTTOMLEFT', x=xofs, y=yofs},siz={w=124, h=30},apos='TOPLEFT'},
+	TargetDebuffs = {pos={a='LEFT', p=TargetFrame, a2='LEFT', x=xofs, y=yofs +6},siz={w=124, h=30},apos='TOPLEFT'},
+	FocusBuffs = {pos={a='TOPLEFT', p=FocusFrame, a2='BOTTOMLEFT', x=xofs, y=yofs},siz={w=124, h=30},apos='TOPLEFT'},
+	FocusDebuffs = {pos={a='LEFT', p=FocusFrame, a2='LEFT', x=xofs, y=yofs +6},siz={w=124, h=30},apos='TOPLEFT'},
 },{
 	__index = function(t,k)
 		local _,_,v = k:GetName()
@@ -115,34 +115,41 @@ function addon:setup_anchor()
 	for _,frame in pairs(nextframes) do
 		local data = config_anchor[frame:GetName()]
 		local position = {data.pos.a, data.pos.p, data.pos.a2, data.pos.x, data.pos.y}
+		local name = frame:GetName()
+		local apos = data.apos or 'CENTER'
+		local color = data.par or false
 		frame:ClearAllPoints()
-		frame.anchor = c_anchor(frame,frame:GetName(),frame:GetName(),position,data.siz.w,data.siz.h,data.par or false)
+		frame.anchor = c_anchor(frame,name,name,position,data.siz.w,data.siz.h,color,apos)
 		frame.SetPoint = noop
 	end
 end
 
 -- /* create combat indicator */
-local function style_combat(parent, xoffset, unit)
-	local cicon = CreateFrame('Frame', nil, parent)
-	cicon:SetPoint('RIGHT', xoffset, 5)
-	cicon:SetSize(28, 28)
-	
-	-- create dualwield texture:
-	cicon.t = cicon:CreateTexture(nil, 'BORDER')
-	cicon.t:SetAllPoints()
-	cicon.t:SetTexture(src.dualweild)
-	cicon:SetScript('OnUpdate', function(self)
-		if UnitAffectingCombat(unit) then
-			self:SetAlpha(1)
-		else
-			self:SetAlpha(0)
-		end
-	end);
-end
+local ct = CreateFrame('Frame', nil, TargetFrame)
+ct:SetPoint('RIGHT', TargetFrame, 2, 5)
+local cf = CreateFrame('Frame', nil, FocusFrame)
+cf:SetPoint('RIGHT', FocusFrame, 2, 5)
 
+local frames = {target = {ct,'PLAYER_TARGET_CHANGED'},focus = {cf,'PLAYER_FOCUS_CHANGED'},}
 if config.global.combaticon then
-	style_combat(TargetFrame, -6, 'target')
-	style_combat(FocusFrame, -6, 'focus')
+	for k,v in pairs(frames) do
+		local f = v[1]
+		f:SetSize(30, 30)
+		f.t = f:CreateTexture(nil, 'BORDER')
+		f.t:SetAllPoints()
+		f.t:SetTexture(src.dualweild)
+		f:Hide()
+
+		f:SetScript('OnEvent', function(self, event, unit)
+			if (unit == k or event == v[2]) then
+				self[UnitAffectingCombat(k) and 'Show' or 'Hide'](self)
+			end
+		end)
+	 
+		f:RegisterEvent('UNIT_FLAGS')
+		f:RegisterEvent('PLAYER_TARGET_CHANGED')
+		f:RegisterEvent('PLAYER_FOCUS_CHANGED')
+	end
 end
 
 -- /* create string style */

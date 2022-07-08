@@ -56,10 +56,12 @@ local E_DEBUFFS_OFFSET_Y = config.e_debuffs_offset_y
 local BORDER_OFFSET = config.border_offset
 local partybuffs = addon.config.party
 local MAX_PARTY_BUFFS = partybuffs.maxbuffs
-local MAX_PARTY_DEBUFFS = 4
+local MAX_PARTY_DEBUFFS = 4 -- don't touch this
 local texcoord = addon.texcoord
 local maxshows
 
+FocusFrame.maxBuffs = config.focus_maxbuffs
+FocusFrame.maxDebuffs = config.focus_maxdebuffs
 TargetFrame.maxBuffs = config.target_maxbuffs
 TargetFrame.maxDebuffs = config.target_maxdebuffs
 TargetFrame_UpdateAuras(TargetFrame)
@@ -67,8 +69,8 @@ TargetFrame_UpdateAuras(TargetFrame)
 -- /* create anchor frame */
 local t_buffs = CreateFrame('Frame', 'TargetBuffs', UIParent)
 local t_debuffs = CreateFrame('Frame', 'TargetDebuffs', UIParent)
-t_buffs:SetSize(146, 28)
-t_debuffs:SetSize(146, 28)
+t_buffs:SetSize(116, 28)
+t_debuffs:SetSize(116, 28)
 
 local f_buffs = CreateFrame('Frame', 'FocusBuffs', UIParent)
 local f_debuffs = CreateFrame('Frame', 'FocusDebuffs', UIParent)
@@ -375,12 +377,12 @@ local function CreatePartyAuras()
 		local buffs;
 		local debuffs;
 		local icn, bo, oldborder;
-		if (not party) then break end
+		if not party then break end
 		-- buffs:
 		for j = 1, MAX_PARTY_BUFFS, 1 do
-			buffs = CreateFrame('Button', party..'Buff'..j, getglobal(party), 'PartyBuffFrameTemplate');
+			buffs = CreateFrame('Button', party..'Buff'..j, _G[party], 'PartyBuffFrameTemplate');
 			buffs:SetID(j);
-			buffs:SetScale(1.8)
+			buffs:SetScale(partybuffs.buffs_scale)
 			buffs:ClearAllPoints();
 			if j == 1 then
 				buffs:SetPoint('TOPLEFT', party, 'TOPLEFT', 24, -20);
@@ -408,15 +410,17 @@ local function CreatePartyAuras()
 		
 		-- debuffs first row:
 		for k = 1, MAX_PARTY_DEBUFFS, 1 do
-			debuffs = getglobal(party..'Debuff'..k);
-			debuffs:SetScale(1.7)
+			debuffs = _G[party..'Debuff'..k];
+			if not partybuffs.show_debuffs then debuffs:SetAlpha(0); return end
+			debuffs:SetScale(partybuffs.debuffs_scale)
+			debuffs:SetFrameLevel(1)
 			debuffs:ClearAllPoints();
 			if (k == 1) then
-				debuffs:SetPoint('TOPLEFT', party, 'TOPLEFT', 70, -8)
+				debuffs:SetPoint('TOPLEFT', party, 'TOPLEFT', 74, -6)
 			else
 				debuffs:SetPoint('LEFT', _G[party..'Debuff'..(k-1)], 'RIGHT', -1, 0)
 			end
-			if (not debuffs.styled) then
+			if not debuffs.styled then
 				-- icon:
 				icn = _G[debuffs:GetName()..'Icon']
 				if icn then
@@ -443,19 +447,19 @@ end
 -- /* hide buffinfo tooltip */
 __PartyMemberBuffTooltip_Update = PartyMemberBuffTooltip_Update;
 PartyMemberBuffTooltip_Update = function(self)
-	if (not partybuffs.showbuffs) then
+	if not partybuffs.show_buffs then
 		__PartyMemberBuffTooltip_Update(self)
 	end
 	return;
 end
 
 -- /* hook func is safe to call */
-function __RefreshDebuffs(self, unit, numDebuffs, suffix, checkCVar)
-	local name = self:GetName();
+function __RefreshDebuffs(frame, unit, numDebuffs, suffix, checkCVar)
+	local frameName = frame:GetName();
 	numDebuffs = numDebuffs or 4;
-	if strfind(name, '^PartyMemberFrame%d$') then
-		if partybuffs.showbuffs then
-			RefreshBuffs(self, unit, MAX_PARTY_BUFFS);
+	if strfind(frameName, '^PartyMemberFrame%d$') then
+		if partybuffs.show_buffs then
+			RefreshBuffs(frame, unit, MAX_PARTY_BUFFS);
 		end
 	end
 end
@@ -464,9 +468,7 @@ end
 CreatePartyAuras()
 hooksecurefunc('RefreshDebuffs',__RefreshDebuffs)
 hooksecurefunc('TargetFrame_UpdateAuras',__TargetFrame_UpdateAuras)
-if config.dispelable then
-	hooksecurefunc('TargetFrame_UpdateAuras',__TargetFrame_UpdateAurasDispel)
-end
+if config.dispelable then hooksecurefunc('TargetFrame_UpdateAuras',__TargetFrame_UpdateAurasDispel) end
 hooksecurefunc('TargetFrame_UpdateAuraPositions',__UpdateAuraPositions)
 hooksecurefunc('TargetFrame_UpdateBuffAnchor',__UpdateBuffAnchor)
 hooksecurefunc('TargetFrame_UpdateDebuffAnchor',__UpdateDebuffAnchor)

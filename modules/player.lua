@@ -77,7 +77,6 @@ function __PlayerFrame_ToPlayerArt(self)
 	if (get_unitclass == 'DEATHKNIGHT') then
 		RuneFrame:ClearAllPoints()
 		RuneFrame.anchor = addon.c_anchor(RuneFrame,'Runes',RuneFrame:GetName(),uconfig.runeanchor,140,40)
-		RuneFrame:SetParent(PlayerFrame)
 		RuneFrame:SetScale(uconfig.runescale)
 	end
 end

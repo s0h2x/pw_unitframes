@@ -74,6 +74,7 @@ local function stylecastbar()
 		frame.border:SetPoint('TOPRIGHT', frame, 3, 3)
 		frame.border:SetPoint('BOTTOMLEFT', frame, -3, -3)
 		frame.border:SetTexture(src.border)
+		frame.border:SetVertexColor(unpack(own.castbar_icon_color))
 	end
 	
 	-- set some elements to top bar, its special for player:

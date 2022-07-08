@@ -32,7 +32,6 @@ function event_:ADDON_LOADED()
 	-- create save data table:
 	_appdata['signin'] = true
 	table.assign_over(default_config, _appdata)
-	SetCVar('fullSizeFocusFrame', addon.config.focus.fullsize);
 	
 	addon:setup_anchor()
 	
