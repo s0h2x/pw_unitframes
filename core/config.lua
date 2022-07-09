@@ -123,6 +123,7 @@ local config = {
 		scale = 1.26, -- party members scale
 		
 		-- castbar:
+		castbar_show = true, 
 		castbar_scale = 1.07, -- castbar scale
 		castbar_width = 125, -- castbar width
 		castbar_height = 10, -- castbar height
