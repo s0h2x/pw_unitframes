@@ -5,7 +5,7 @@
 <p align="center">Lightweight version of my unitframes, base on default WoW UI code.</p>
 <p align="center">
     <a href="https://github.com/s0h2x/pw_unitframes/releases/latest">
-    <a href="https://github.com/s0h2x/pw_unitframes/releases/download/v1.2.7c/pw_unitframes.zip">
+    <a href="https://github.com/s0h2x/pw_unitframes/releases/download/v1.2.17c/pw_unitframes.zip">
     <img src="https://img.shields.io/github/downloads/s0h2x/pw_unitframes/total?label=Download%40latest&style=flat-square&logo=github&logoColor=white"
          alt="Latest">
    <a href="https://github.com/s0h2x/pw_unitframes/releases">
@@ -31,7 +31,7 @@
     - frames: player, target, focus, target of target, focus of target, party, party-targets, arena, arena-targets
     - elements: castbars, arena trinkets, auras, cooldowns, class portraits
 ## Installation
-- **[Download latest](https://github.com/s0h2x/pw_unitframes/releases/download/v1.2.7c/pw_unitframes.zip)** stable version from the release section.
+- **[Download latest](https://github.com/s0h2x/pw_unitframes/releases/download/v1.2.17c/pw_unitframes.zip)** stable version from the release section.
 - Extract the `pw_unitframes-master.zip` and open this folder
 - Move the `sub` folder to the root folder of the AddOns;
 - Make sure the folder name is not have `-master`
