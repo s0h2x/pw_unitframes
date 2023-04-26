@@ -48,8 +48,8 @@ local function frame_style_arena()
 		frame.pet:SetPoint('TOPLEFT', frame, 'TOPLEFT', 2, -38)
 		frame.pettexture = _G[frame.pet:GetName()..'Texture']
 		frame.pettexture:SetVertexColor(unpack(config.global.framecolors))
-		frame.petportrait = _G[frame.pet:GetName()..'Portrait']
-		frame.petportrait:SetAllPoints()
+		-- frame.petportrait = _G[frame.pet:GetName()..'Portrait']
+		-- frame.petportrait:SetAllPoints()
 		
 		frame.bg = _G[frame:GetName()..'Background']
 		frame.bg:SetSize(62, 20)
